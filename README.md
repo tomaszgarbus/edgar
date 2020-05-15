@@ -1,2 +1,1 @@
-# edgar
-Entity Driven Glorious Automatic wRiter
+# EDGAR - Entity Driven Glorious Automatic wRiter
