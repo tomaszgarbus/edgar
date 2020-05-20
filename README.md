@@ -1,3 +1,3 @@
-# EDGAR - Entity Driven Glorious Automatic wRiter
+# EDGAR - Entity Driven GPT-2-based Automatic wRiter
 
 ## Config format

@@ -1,3 +1,5 @@
 .idea
 */__pycache__
 local
+gpt_2_simple/checkpoints
+gpt_2_simple/models
