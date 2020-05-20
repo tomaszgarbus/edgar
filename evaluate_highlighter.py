@@ -1,3 +1,4 @@
+import logging
 from typing import List, Tuple, Optional, Set
 
 import numpy as np
@@ -6,25 +7,20 @@ from tqdm import tqdm
 from ner.highlighter import Highlighter
 
 
-def evaluate_category(hl: Highlighter, texts: List[str],
-                      entity_sets: List[Set[Tuple[str, str]]],
-                      category_name: Optional[str]) -> None:
+def _evaluate_category(predictions: List[Set[Tuple[str, str]]],
+                       ground_truths: List[Set[Tuple[str, str]]],
+                       category_name: Optional[str]) -> None:
     """
-    Evaluates the Highlighter only on one category of entities.
-    :param hl: Highlighter object put under test.
-    :param texts: Evaluation dataset.
-    :param entity_sets: Ground truths for each text, expressed as sets
-                        of pairs (base entity name, category name).
+    :param predictions: Predictions, expressed as sets of pairs
+                        (base entity name, category name).
+    :param ground_truths: Ground truths in the same format.
     :param category_name: If None, all categories are evaluated jointly.
     :return: Nothing, outputs evaluation metrics to std.
     """
     precs = []
     recs = []
     f1s = []
-    for ground_truth, text in tqdm(list(zip(entity_sets, texts))):
-        pred = hl.extract_entities_from_article(text)
-        y = ground_truth
-        p = pred
+    for y, p in list(zip(ground_truths, predictions)):
         if category_name is not None:
             y = set(filter(lambda a: a[1] == category_name, y))
             p = set(filter(lambda a: a[1] == category_name, p))
@@ -63,5 +59,10 @@ def evaluate(hl: Highlighter, texts: List[str],
     for es in entity_sets:
         for e in es:
             categories.add(e[1])
+    logging.info('Computing predictions...')
+    preds = []
+    for text in tqdm(texts):
+        preds.append(hl.extract_entities_from_article(text))
+    logging.info('OK')
     for category in list(categories) + [None]:
-        evaluate_category(hl, texts, entity_sets, category)
+        _evaluate_category(hl, preds, entity_sets, category)
