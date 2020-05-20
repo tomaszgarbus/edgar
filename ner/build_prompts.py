@@ -11,6 +11,7 @@ from utils import list_all_files
 def build_prompts(input_path, output_dir, config_path):
     highlighter = Highlighter(config_path)
     logging.info('Building prompts...')
+    os.makedirs(output_dir, exist_ok=True)
     if os.path.isdir(input_path):
         files = list_all_files(input_path)
         for f in tqdm(files):
@@ -20,8 +21,8 @@ def build_prompts(input_path, output_dir, config_path):
                 fp.write(highlighter.append_prompt_to_article(article))
     elif os.path.isfile(input_path):
         with open(input_path, 'r') as fp:
-            lines = fp.readlines()
-        for article in lines:
+            lines = list(fp.readlines())
+        for article in tqdm(lines):
             outfile = os.path.join(output_dir,
                                    str(len(os.listdir(output_dir))))
             with open(outfile, 'w+') as fp:
