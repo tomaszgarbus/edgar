@@ -1,5 +1,7 @@
 .idea
+__pycache__
 */__pycache__
 local
 gpt_2_simple/checkpoints
 gpt_2_simple/models
+e2e-dataset
