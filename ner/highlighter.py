@@ -129,9 +129,11 @@ class Highlighter:
         return entities
 
     def build_prompt(self, article: str):
-        entities = self.extract_entities_from_article(article)
-        entities = defaultdict(list, dict(map(lambda a: (a[1], a[0]),
-                                              entities)))
+        entities_list = self.extract_entities_from_article(article)
+        entities = defaultdict(list)
+        for entity in entities_list:
+            entities[entity[1]].append(entity[0])
+
         prompt = ''
         for cat in self.categories:
             prompt += cat + ':' + ','.join(entities[cat]) + '\n'
