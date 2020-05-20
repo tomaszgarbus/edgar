@@ -1,5 +1,4 @@
-from collections import Set
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Set
 
 import numpy as np
 
