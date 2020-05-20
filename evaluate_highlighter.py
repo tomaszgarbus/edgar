@@ -25,7 +25,10 @@ def _evaluate_category(hl: Highlighter, texts: List[str],
                 prec = len(p.intersection(y)) / len(p)
                 precs.append(prec)
             if len(y) != 0 and len(p) != 0:
-                f1 = 2 * prec * rec / (prec + rec)
+                if prec + rec == 0.:
+                    f1 = 0.
+                else:
+                    f1 = 2 * prec * rec / (prec + rec)
                 f1s.append(f1)
     if category_name is not None:
         print('Category \"%s\":' % category_name)
