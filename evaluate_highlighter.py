@@ -65,4 +65,4 @@ def evaluate(hl: Highlighter, texts: List[str],
         preds.append(hl.extract_entities_from_article(text))
     logging.info('OK')
     for category in list(categories) + [None]:
-        _evaluate_category(hl, preds, entity_sets, category)
+        _evaluate_category(preds, entity_sets, category)
