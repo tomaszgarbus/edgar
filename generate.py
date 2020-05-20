@@ -1,5 +1,7 @@
 from typing import Set, Tuple
 
+import tensorflow as tf
+
 import gpt_2_simple.gpt_2 as gpt2
 from ner.highlighter import Highlighter
 from utils import f1
@@ -34,5 +36,9 @@ def generate(prompt: str, hl: Highlighter,
         variants = list(map(lambda v: (0. if v[0] is None else v[0], v[1]),
                             variants))
         variants.sort(reverse=True)
-        text = text + variants[0][1]
+        text = variants[0][1]
+
+    tf.reset_default_graph()
+    sess.close()
+
     return text
