@@ -21,7 +21,7 @@ def evaluate_category(hl: Highlighter, texts: List[str],
     precs = []
     recs = []
     f1s = []
-    for ground_truth, text in tqdm(zip(entity_sets, texts)):
+    for ground_truth, text in tqdm(list(zip(entity_sets, texts))):
         pred = hl.extract_entities_from_article(text)
         y = ground_truth
         p = pred
