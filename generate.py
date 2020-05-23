@@ -4,7 +4,7 @@ import tensorflow as tf
 
 import gpt_2_simple.gpt_2 as gpt2
 from ner.highlighter import Highlighter
-from utils import f1
+from utils import fscore
 
 
 def generate(prompt: str, hl: Highlighter,
@@ -31,7 +31,7 @@ def generate(prompt: str, hl: Highlighter,
                                  length=step_length,
                                  prefix=text)
         variants = list(map(
-            lambda v: (f1(entity_set, hl.extract_entities_from_article(v)), v),
+            lambda v: (fscore(entity_set, hl.extract_entities_from_article(v)), v),
             variants))
         variants = list(map(lambda v: (0. if v[0] is None else v[0], v[1]),
                             variants))

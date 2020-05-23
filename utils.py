@@ -22,7 +22,7 @@ def recall(y, p) -> Optional[float]:
         return None
 
 
-def f1(y, p) -> Optional[float]:
+def fscore(y, p) -> Optional[float]:
     prec = precision(y, p)
     rec = recall(y, p)
     if prec is not None and rec is not None:
