@@ -86,7 +86,7 @@ def main():
                        steps=args.steps, step_length=args.step_length,
                        samples_per_step=args.samples_per_step)
         out_path = os.path.join(args.o, f)
-        os.makedirs(out_path, exist_ok=True)
+        os.makedirs(args.o, exist_ok=True)
 
         f_score = fscore(entity_set,
                          hl.extract_entities_from_article(out[len(prompt):]))
