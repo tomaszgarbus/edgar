@@ -6,32 +6,32 @@ import tensorflow as tf
 import gpt_2_simple.gpt_2 as gpt2
 from ner.highlighter import Highlighter
 from utils import fscore
+import os
 
 
 def generate(prompt: str, hl: Highlighter,
-             entity_set: Set[Tuple[str, str]], model_name='355M',
+             entity_set: Set[Tuple[str, str]], input_dir: str,
+             model_name='355M',
              multi_gpu=False,
-             model_dir='gpt_2_simple/models',
              checkpoint_dir='gpt_2_simple/checkpoints',
              steps: int = 5, step_length: int = 20,
              samples_per_step: int = 5):
     sess = gpt2.start_tf_sess()
 
-    gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir,
-                   model_name=model_name, multi_gpu=multi_gpu,
-                   model_dir=model_dir)
+    gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir, multi_gpu=multi_gpu,
+                   run_name=(os.path.dirname(input_dir) or input_dir))
 
     text = prompt
     for _ in range(steps):
         variants = gpt2.generate(sess,
                                  checkpoint_dir=checkpoint_dir,
-                                 model_name=model_name,
-                                 model_dir=model_dir,
                                  return_as_list=True,
                                  nsamples=samples_per_step,
                                  length=step_length,
                                  include_prefix=True,
-                                 prefix=text)
+                                 prefix=text,
+                                 truncate='<|endoftext|>',
+                                 run_name=(os.path.dirname(input_dir) or input_dir))
         variants = list(map(
             lambda v: (fscore(entity_set, hl.extract_entities_from_article(v[len(prompt):])), v),
             variants))

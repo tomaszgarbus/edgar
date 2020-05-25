@@ -29,7 +29,7 @@ def finetune(model_name, input_dir,
                   steps=num_steps,
                   multi_gpu=multi_gpu,
                   checkpoint_dir=checkpoint_dir,
-                  run_name=os.path.dirname(input_dir)
+                  run_name=(os.path.dirname(input_dir) or input_dir)
                   )
     logging.info('Finetuning finished')
 
