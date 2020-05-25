@@ -14,7 +14,7 @@ def generate(prompt: str, hl: Highlighter,
              model_dir='gpt_2_simple/models',
              checkpoint_dir='gpt_2_simple/checkpoints',
              steps: int = 5, step_length: int = 20,
-             samples_per_step: int = 20):
+             samples_per_step: int = 5):
     sess = gpt2.start_tf_sess()
 
     gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir,
@@ -35,11 +35,11 @@ def generate(prompt: str, hl: Highlighter,
         variants = list(map(
             lambda v: (fscore(entity_set, hl.extract_entities_from_article(v[len(prompt):])), v),
             variants))
-        print('f1: ', variants[0][0])
         variants = list(map(lambda v: (0. if v[0] is None else v[0], v[1]),
                             variants))
         variants.sort(reverse=True)
         text = variants[0][1]
+        print('f1: ', variants[0][0])
 
     tf.reset_default_graph()
     sess.close()
