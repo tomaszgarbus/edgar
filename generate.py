@@ -39,7 +39,6 @@ def generate(prompt: str, hl: Highlighter,
                             variants))
         variants.sort(reverse=True)
         text = variants[0][1]
-        print('f1: ', variants[0][0])
 
     tf.reset_default_graph()
     sess.close()
