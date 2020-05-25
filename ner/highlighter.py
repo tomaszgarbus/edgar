@@ -5,7 +5,7 @@ from typing import Tuple, Callable
 import pygtrie
 from tqdm import tqdm
 
-from utils import validate_and_load_config
+from ner.schema import validate_and_load_config
 
 
 class Highlighter:

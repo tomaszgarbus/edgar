@@ -1,3 +1,8 @@
+import json
+import logging
+
+from jsonschema import validate
+
 schema = {
     "type": "object",
     "required": ["categories"],
@@ -41,3 +46,13 @@ schema = {
         }
     }
 }
+
+
+def validate_and_load_config(config_path: str):
+    with open(config_path, 'r') as fp:
+        config = json.load(fp)
+    logging.info('Validating JSON schema...')
+    validate(instance=config, schema=schema)
+    if 'case_sensitive' not in config:
+        config['case_sensitive'] = True
+    return config

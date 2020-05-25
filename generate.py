@@ -91,7 +91,7 @@ def main():
         f_score = fscore(entity_set,
                          hl.extract_entities_from_article(out[len(prompt):]))
         logging.info('F-Score: %f' % f_score)
-        
+
         with open(out_path, 'w') as fp:
             fp.write(out)
 

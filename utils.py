@@ -1,12 +1,7 @@
-import json
-import logging
 import os
 from typing import Optional
 
-from jsonschema import validate
-
 from ner.highlighter import Highlighter
-from ner.schema import schema as config_schema
 
 
 def precision(y, p) -> Optional[float]:
@@ -44,16 +39,6 @@ def list_all_files(dir):
             ret += list(map(lambda f: os.path.join(e, f),
                             list_all_files(os.path.join(dir, e))))
     return ret
-
-
-def validate_and_load_config(config_path: str):
-    with open(config_path, 'r') as fp:
-        config = json.load(fp)
-    logging.info('Validating JSON schema...')
-    validate(instance=config, schema=config_schema)
-    if 'case_sensitive' not in config:
-        config['case_sensitive'] = True
-    return config
 
 
 def load_prompt_from_file(fname: str, highlighter: Highlighter) -> (str, set):
