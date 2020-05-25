@@ -80,7 +80,7 @@ def main():
     hl = Highlighter(args.c)
     # Run generation loop.
     for f in tqdm(files):
-        prompt, entity_set = load_prompt_from_file(os.path.join(args.i, f),
+        prompt, entity_set = load_prompt_from_file(os.path.join(args.p, f),
                                                    hl)
         out = generate(prompt, hl, entity_set, args.i, multi_gpu=args.multi_gpu,
                        steps=args.steps, step_length=args.step_length,
