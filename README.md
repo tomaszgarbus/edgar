@@ -1,1 +1,1 @@
-# EDGAR - Entity Driven GPT-2 Automatic wRiter
+# EDGAR - Entity Driven GPT-2-based Automatic wRiter

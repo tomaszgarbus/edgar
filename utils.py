@@ -5,6 +5,7 @@ from typing import Optional
 
 from jsonschema import validate
 
+from ner.highlighter import Highlighter
 from ner.schema import schema as config_schema
 
 
@@ -53,3 +54,26 @@ def validate_and_load_config(config_path: str):
     if 'case_sensitive' not in config:
         config['case_sensitive'] = True
     return config
+
+
+def load_prompt_from_file(fname: str, highlighter: Highlighter) -> (str, set):
+    entities = set()
+    with open(fname, 'r') as file:
+        content = file.read()
+    for line in content.split('\n'):
+        if line == '':
+            continue
+        cat = line.split(':')[0]
+        if len(line.split(':')) > 1:
+            vals = line.split(':')[1].split(',')
+        else:
+            vals = []
+        assert cat in highlighter.categories
+        for val in vals:
+            if val in highlighter.trie:
+                for e in highlighter.trie[val]:
+                    if e[1] == cat:
+                        val = e[0]
+                        break
+            entities.add((val, cat))
+    return content, entities
