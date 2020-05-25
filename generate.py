@@ -1,3 +1,4 @@
+import logging
 from typing import Set, Tuple
 
 import tensorflow as tf
@@ -29,10 +30,12 @@ def generate(prompt: str, hl: Highlighter,
                                  return_as_list=True,
                                  nsamples=samples_per_step,
                                  length=step_length,
+                                 include_prefix=True,
                                  prefix=text)
         variants = list(map(
-            lambda v: (fscore(entity_set, hl.extract_entities_from_article(v)), v),
+            lambda v: (fscore(entity_set, hl.extract_entities_from_article(v[len(prompt):])), v),
             variants))
+        print('f1: ', variants[0][0])
         variants = list(map(lambda v: (0. if v[0] is None else v[0], v[1]),
                             variants))
         variants.sort(reverse=True)

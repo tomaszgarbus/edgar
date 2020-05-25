@@ -68,7 +68,7 @@ class Highlighter:
             trie: pygtrie.Trie,
             match_case=True):
         """
-        handle_entity  is a function that takes as arguments:
+        handle_entity is a function that takes as arguments:
         * matched pattern range in text
         * matched pattern as string
         * resolved entity (base name, category name)
@@ -128,16 +128,22 @@ class Highlighter:
         self.run(article, _get_code_default, self.trie)
         return entities
 
-    def build_prompt(self, article: str):
-        entities_list = self.extract_entities_from_article(article)
+    def entity_set_to_prompt(self, entity_set):
+        """
+        Build a prompt from the set of entities.
+        """
         entities = defaultdict(list)
-        for entity in entities_list:
+        for entity in entity_set:
             entities[entity[1]].append(entity[0])
 
         prompt = ''
         for cat in self.categories:
             prompt += cat + ':' + ','.join(entities[cat]) + '\n'
         return prompt
+
+    def build_prompt(self, article: str):
+        entities_list = self.extract_entities_from_article(article)
+        return self.entity_set_to_prompt(entities_list)
 
     def append_prompt_to_article(self, article: str):
         return self.build_prompt(article) + article
