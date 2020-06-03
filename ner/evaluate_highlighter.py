@@ -28,8 +28,8 @@ def _evaluate_category(predictions: Union[
     f1s = []
     for y, p in list(zip(ground_truths, predictions)):
         if category_name is not None:
-            y = set(filter(lambda a: a[1] == category_name, y))
-            p = set(filter(lambda a: a[1] == category_name, p))
+            y = set(filter(lambda a: a[-1] == category_name, y))
+            p = set(filter(lambda a: a[-1] == category_name, p))
         if len(y) != 0:
             rec = len(p.intersection(y)) / len(y)
             recs.append(rec)
@@ -68,7 +68,7 @@ def evaluate(hl: Highlighter, texts: List[str],
     categories = set()
     for es in entity_sets:
         for e in es:
-            categories.add(e[1])
+            categories.add(e[-1])
     logging.info('Computing predictions...')
     preds = []
     for text in tqdm(texts):
