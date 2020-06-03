@@ -118,12 +118,23 @@ class Highlighter:
                 i += 1
         return ret
 
-    def extract_entities_from_article(self, article: str):
+    def extract_entities_from_article(self, article: str, mode='default'):
+        """
+        Two modes are available:
+        * default -> the return value is (entity name, category)
+        * spacy -> the return value is ((range_beg, range_end), category)
+        """
+        assert mode in ['default', 'spacy']
         entities = set()
 
-        def _get_code_default(ignored_where, pattern, entity):
-            entities.add(entity)
-            return pattern
+        if mode == 'default':
+            def _get_code_default(ignored_where, pattern, entity):
+                entities.add(entity)
+                return pattern
+        else:  # mode == 'spacy':
+            def _get_code_default(where, pattern, entity):
+                entities.add((where, entity[1]))
+                return pattern
 
         self.run(article, _get_code_default, self.trie)
         return entities

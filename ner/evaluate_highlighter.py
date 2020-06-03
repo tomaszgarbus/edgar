@@ -1,5 +1,5 @@
 import logging
-from typing import List, Tuple, Optional, Set
+from typing import List, Tuple, Optional, Set, Union
 
 import numpy as np
 from tqdm import tqdm
@@ -7,8 +7,14 @@ from tqdm import tqdm
 from ner.highlighter import Highlighter
 
 
-def _evaluate_category(predictions: List[Set[Tuple[str, str]]],
-                       ground_truths: List[Set[Tuple[str, str]]],
+def _evaluate_category(predictions: Union[
+                           List[Set[Tuple[str, str]]],
+                           List[Set[Tuple[int, int, str]]],
+                       ],
+                       ground_truths: Union[
+                           List[Set[Tuple[str, str]]],
+                           List[Set[Tuple[int, int, str]]],
+                       ],
                        category_name: Optional[str]) -> None:
     """
     :param predictions: Predictions, expressed as sets of pairs
@@ -46,12 +52,16 @@ def _evaluate_category(predictions: List[Set[Tuple[str, str]]],
 
 
 def evaluate(hl: Highlighter, texts: List[str],
-             entity_sets: List[Set[Tuple[str, str]]]) -> None:
+             entity_sets: Union[
+                 List[Set[Tuple[str, str]]],
+                 List[Set[Tuple[int, int, str]]],
+             ], mode='default') -> None:
     """
     :param hl: Highlighter object put under test.
     :param texts: Evaluation dataset.
     :param entity_sets: Ground truths for each text, expressed as sets
                         of pairs (base entity name, category name).
+    :param mode: Entity representation mode. 'default' or 'spacy'
     :return: Nothing, outputs evaluation metrics to std.
     """
     assert len(entity_sets) == len(texts)
@@ -62,7 +72,7 @@ def evaluate(hl: Highlighter, texts: List[str],
     logging.info('Computing predictions...')
     preds = []
     for text in tqdm(texts):
-        preds.append(hl.extract_entities_from_article(text))
+        preds.append(hl.extract_entities_from_article(text, mode=mode))
     logging.info('OK')
     for category in list(categories) + [None]:
         _evaluate_category(preds, entity_sets, category)
