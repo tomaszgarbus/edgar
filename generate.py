@@ -72,7 +72,7 @@ def main():
     parser.add_argument('--limit', action='store', type=int,
                         help='Maximum number of samples to generate.')
     args = parser.parse_args()
-    files = list_all_files(args.i)
+    files = list_all_files(args.p)
     shuffle(files)
     if args.limit:
         files = files[:args.limit]
