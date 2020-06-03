@@ -21,9 +21,12 @@ Everything boils down to defining a set of categories
 of objects you wish to extract from texts and, for each category, a set of
 entities (see the [example football-specific config](https://raw.githubusercontent.com/tomaszgarbus/edgar/master/configs/football.json)).
 
+### Demo Colab notebooks
 [Run a demo on Colab](https://colab.research.google.com/drive/1oB6UicgeQEIaGrf2JHD_8AwJXel4gjV0?usp=sharing)
 to see EDGAR work on [E2E dataset](https://github.com/tuetschek/e2e-dataset) and
 learn how the quality of generated text benefits from using EDGAR versus raw GPT-2.
+
+Alternatively, check out [this notebook](https://colab.research.google.com/drive/1PURy7p7jscwRxjLBnqNaKzxV6hyHPhJe?usp=sharing) to generate football articles using provided config Json.
 
 ## License
 GPL-3
